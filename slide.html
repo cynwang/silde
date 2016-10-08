@@ -84,12 +84,12 @@
 			
 			var myIndex=$(this).text();
 			console.log(myIndex);
-			var offset=-240*(myIndex-index);
+			var offset=-240*(myIndex-1);
 			animate(offset);
-			
+
 		});
 	});
-	var timer;
+	var timer=0;
 	function play(){
 		timer=setInterval(function () {
 	        go();
@@ -109,16 +109,14 @@
 	    }else {
 	        index += 1;
 	    }
-
 	    animate(-240*(index-1));
 	    showButton();
 	} 
 	
 	function animate (offset) {
 		animated=true;
-
+		console.log(offset);
          $("#myul").animate({left:offset});
-
          animated=false;
     }
 	 function showButton(){
@@ -126,11 +124,18 @@
 			$(this).removeClass("active");
 		});
 		$('#ol li :eq('+ (index-1) +')').addClass("active");
-
 	 }
 	 var box=document.getElementById('box');
-	box.onmouseover = stop;//父容器的移入移出事件
-    box.onmouseout = play;
+	$("#box").on("mouseenter",function(){
+		stop();
+
+	});
+	$("#box").on("mouseleave",function(){
+		play();
+
+	});
+//	box.onmouseenter = stop();//父容器的移入移出事件
+//    box.onmouseout = play();
     play();
 </script>
 </html>
