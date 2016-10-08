@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+		.box{
+			position: relative;
+			width: 240px;
+			height: 300px;
+			overflow: hidden;
+			margin:0 auto;
+			
+		}
+		ul{
+			width: 10000px;
+			height: 300px;
+			margin: 10px auto 80px;
+			background: #fefefe;
+			overflow: hidden;
+			position: absolute;
+			left:0px;
+			
+		}
+		ul li{
+			
+			float: left;
+		}
+		ol{
+			position: absolute;
+			width: 200px;
+			height:20px;
+			right:10px;
+			top:270px;
+		}
+		ol li{
+			
+			float: left;
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+			color: orange;
+			background-color: white;
+			margin-left: 10px;
+			text-align: center;
+		}
+		.active{
+			background-color: orange;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<div class="box" id="box"> 
+		<ul class="hiSlider" id="myul">
+			<li data-title="11111" class="hiSlider-item"><img src="furniture6.jpg" alt="11111"></li>
+			<li data-title="22222" class="hiSlider-item"><img src="furniture2.jpg" alt="22222"></li>
+			<li data-title="33333" class="hiSlider-item"><img src="furniture3.jpg" alt="33333"></li>
+			<li data-title="44444" class="hiSlider-item"><img src="furniture4.jpg" alt="44444"></li>
+			<li data-title="55555" class="hiSlider-item"><img src="furniture5.jpg" alt="55555"></li>
+		</ul>
+		<ol id='ol'>
+			  <li class='active'>1</li>
+			  <li>2</li>
+			  <li>3</li>
+			  <li>4</li>
+			  <li>5</li>
+		 </ol>
+	</div>
+</body>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script>
+	var index=1;
+	var animated=false;
+	$("#ol li").each(function(i){
+		$(this).on("click",function(){
+			$(this).addClass("active");
+			$(this).siblings().removeClass("active");
+			
+			var myIndex=$(this).text();
+			console.log(myIndex);
+			var offset=-240*(myIndex-index);
+			animate(offset);
+			
+		});
+	});
+	var timer;
+	function play(){
+		timer=setInterval(function () {
+	        go();
+			
+	    }, 2000);
+	}
+	function stop(){
+		clearInterval(timer);
+	}
+
+	function go() {        
+	 	if (animated) {    //如果切换还在进行，则直接结束，直到切换完成
+	        return;
+	    }        
+	    if (index == 5) {
+	        index = 1; 
+	    }else {
+	        index += 1;
+	    }
+
+	    animate(-240*(index-1));
+	    showButton();
+	} 
+	
+	function animate (offset) {
+		animated=true;
+
+         $("#myul").animate({left:offset});
+
+         animated=false;
+    }
+	 function showButton(){
+	 	$("#ol li").each(function(i){
+			$(this).removeClass("active");
+		});
+		$('#ol li :eq('+ (index-1) +')').addClass("active");
+
+	 }
+	 var box=document.getElementById('box');
+	box.onmouseover = stop;//父容器的移入移出事件
+    box.onmouseout = play;
+    play();
+</script>
+</html>
